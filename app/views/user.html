@@ -1,0 +1,94 @@
+<div class="row">
+    <div class="span12">
+        <h2>User Management</h2>
+    </div>
+</div>
+<div class="row">
+    <div class="span6">
+        <button class="btn btn-danger" ng-click="deleteUser()">Delete</button>
+        <button class="btn btn-primary" ng-click="openUserAddForm()">Add user</button>
+    </div>
+    <div class="span6">
+        <div class="input-append pull-right">
+            <input class="input-large" type="text" placeholder="Search by Name" ng-model="searchName">
+            <button class="btn" type="button">
+                <i class="icon-search"></i>
+            </button>
+        </div>
+    </div>
+    <div class="span12">
+        <table class="user-grid table table-bordered table-striped table-hover" ng-init="getUserList()">
+            <thead>
+                <tr>
+                    <th class="align-center"><a href="" ng-click="checkAll()">All</a></th>
+                    <th>Name<a href="" class="pull-right" ng-class="{'icon-chevron-up': nameReverse, 'icon-chevron-down': !nameReverse}" ng-click="predicate = 'Name'; nameReverse=!nameReverse; reverse=nameReverse"></a></th>
+                    <th>Gender</th>
+                    <th>Email<a href="" class="pull-right" ng-class="{'icon-chevron-up': emailReverse, 'icon-chevron-down': !emailReverse}" ng-click="predicate = 'Email'; emailReverse=!emailReverse; reverse=emailReverse"></a></th>
+                    <th>Created Date<a href="" class="pull-right" ng-class="{'icon-chevron-up': dateReverse, 'icon-chevron-down': !dateReverse}" ng-click="predicate = 'CreatedDate'; dateReverse=!dateReverse; reverse=dateReverse"></a></th>
+                    <th class="align-center">Status</th>
+                    <th class="align-center">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-show="users.length > 0" ng-repeat="user in users | filter: searchName | orderBy:predicate:reverse">
+                    <td class="align-center">
+                        <input type="checkbox" ng-model="user.IsChecked">
+                    </td>
+                    <td>{{user.Name}}</td>
+                    <td>{{user.Gender | userGender}}</td>
+                    <td>{{user.Email}}</td>
+                    <td>{{user.CreatedDate | date:'yyyy-MMM-dd'}}</td>
+                    <td class="align-center">{{user.Status | userStatus}}</td>
+                    <td class="align-center">
+                        <a href="" ng-click="openUserEditForm(user)">Edit</a>
+                    </td>
+                </tr>
+                <tr ng-show="!users.length">
+                    <td colspan="7" class="align-center">No user found.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div id="user-frm-modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="myModalLabel">{{action}} User</h3>
+        </div>
+        <div class="modal-body">
+            <form class="form-horizontal" name="form" novalidate>
+                <div class="control-group">
+                    <label class="control-label" for="inputName">Name</label>
+                    <div class="controls">
+                        <input type="text" id="inputName" ng-model="currentUser.Name" required>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Gender</label>
+                    <div class="controls">
+                        <select ng-model="currentUser.Gender"
+                            ng-options="genderID as genderName for (genderID , genderName) in genderOptions"
+                            required>
+                        </select>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="inputEmail">Email</label>
+                    <div class="controls">
+                        <input type="email" id="inputEmail" ng-model="currentUser.Email" required>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="inputStatus">Status</label>
+                    <div class="controls">
+                        <input type="checkbox" id="inputStatus" ng-checked="currentUser.Status" ng-model="currentUser.Status">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+            <button class="btn btn-primary" ng-click="save()" ng-disabled="form.$invalid">Save changes</button>
+        </div>
+</div>

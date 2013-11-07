@@ -1,0 +1,4 @@
+/* Will be compiled down to a single stylesheet with your sass files */
+.user-grid .align-center {
+    text-align: center;
+}
