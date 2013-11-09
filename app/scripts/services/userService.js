@@ -1,6 +1,6 @@
 'use strict';
 
-var API_URL = 'http://192.168.1.124/user-management/api/index.php';
+var API_URL = 'http://192.168.1.124/sample-user-management/api/index.php';
 var userServices = angular.module('userServices', ['ngResource']);
 
 userServices.factory('User', ['$resource', '$http',
